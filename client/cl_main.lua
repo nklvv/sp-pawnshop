@@ -21,13 +21,21 @@ RegisterNetEvent('sp-pawnshop:client:openMenu', function()
     local menuItems = {}
 
     for item, data in pairs(Config.Items) do
-        table.insert(menuItems, {
+        local iconPath = ""
+
+        if Config.Inventory == "ox" then
+            iconPath = "nui://ox_inventory/web/images/" .. item .. ".png"
+        elseif Config.Inventory == "qb" then
+            iconPath = "nui://qb-inventory/html/images/" .. item .. ".png"
+        end
+
+        menuItems[#menuItems + 1] = {
             title = data.label,
             description = "Sell for $" .. data.price .. " each",
-            icon = "nui://ox_inventory/web/images/" .. item .. ".png",
-            event = "sp-pawnshop:client:sellItem", 
+            icon = iconPath,
+            event = "sp-pawnshop:client:sellItem",
             args = { item = item, price = data.price }
-        })
+        }
     end
 
     lib.registerContext({
@@ -48,6 +56,6 @@ RegisterNetEvent('sp-pawnshop:client:sellItem', function(data)
         local quantity = tonumber(input[1])
         TriggerServerEvent('sp-pawnshop:server:sellItem', data.item, data.price, quantity)
     else
-        lib.notify({ title = 'Pawnshop', description = 'Invalid quantity', type = 'error' })
+        QBCore.Functions.Notify('Invalid quantity', 'error')
     end
 end)
