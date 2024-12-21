@@ -1,6 +1,7 @@
 Config = {}
 
 Config.PawnshopLocation = vector3(-477.57, 279.85, 83.29) 
+Config.Inventory = "ox" 
 
 Config.Items = {
     ["bottle_water"] = {
